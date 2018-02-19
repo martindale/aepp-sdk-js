@@ -44,7 +44,6 @@ describe ('Http service aens', () => {
 
       await utils.httpProvider2.base.waitNBlocks(1)
       let nameData = await utils.httpProvider1.aens.getName(name)
-      console.log(`Name data ${JSON.stringify(nameData)}`)
       assert.ok(nameData)
       assert.equal(nameHash, nameData['name_hash'])
       assert.equal(name, nameData['name'])
@@ -96,9 +95,4 @@ describe ('Http service aens', () => {
 
     })
   })
-  // describe('revoke', () => {
-  //   if('should return something', async () => {
-  //
-  //   })
-  // })
 })
