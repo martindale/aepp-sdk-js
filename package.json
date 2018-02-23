@@ -19,9 +19,6 @@
     "type": "git",
     "url": "https://github.com/aeternity/aepp-sdk-js"
   },
-  "browser": {
-    "./lib/providers/ws/websocket.js": "./lib/providers/ws/browser/websocket.js"
-  },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.39",
     "@babel/core": "^7.0.0-beta.39",

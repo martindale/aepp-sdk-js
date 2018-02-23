@@ -55,10 +55,6 @@ let httpProvider3 = new AeternityClient(new AeHttpProvider ('localhost', 3033, {
   secured: false
 }))
 
-// before = () => {
-//
-// }
-
 
 module.exports = {
   httpProvider1,
