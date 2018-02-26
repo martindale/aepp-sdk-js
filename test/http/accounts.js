@@ -23,6 +23,9 @@ const assert = chai.assert
 
 const utils = require('../utils')
 
+before = async () => {
+  utils.httpProvider1.base.waitNBlocks(1)
+}
 
 describe('Http accounts service', () => {
   describe('getTransactions', () => {

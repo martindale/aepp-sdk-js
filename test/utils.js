@@ -42,23 +42,29 @@ const randomAeName = () => {
   return `${text}.aet`
 }
 
-let httpProvider1 = new AeternityClient(new AeHttpProvider ('localhost', 3013, {
-  internalPort: 3113,
-  secured: false
-}))
-let httpProvider2 = new AeternityClient(new AeHttpProvider ('localhost', 3023, {
-  internalPort: 3123,
-  secured: false
-}))
-let httpProvider3 = new AeternityClient(new AeHttpProvider ('localhost', 3033, {
-  internalPort: 3133,
-  secured: false
-}))
+let provider = new AeHttpProvider ('localhost', 3013, {secured: false})
+
+provider.setBaseUrl('http://localhost:3001')
+provider.setBaseUrl('http://localhost:3001/internal',true)
+let client1 = new AeternityClient(provider)
+
+let provider2 = new AeHttpProvider ('localhost', 3023, {secured: false})
+provider2.setBaseUrl('http://localhost:3002/')
+provider2.setBaseUrl('http://localhost:3002/internal',true)
+
+let client2 = new AeternityClient(provider2)
+
+let provider3 = new AeHttpProvider ('localhost', 3033, {secured: false})
+
+provider3.setBaseUrl('http://localhost:3003/')
+provider3.setBaseUrl('http://localhost:3003/internal',true)
+
+let httpProvider3 = new AeternityClient(provider3)
 
 
 module.exports = {
-  httpProvider1,
-  httpProvider2,
+  httpProvider1: client1,
+  httpProvider2: client2,
   httpProvider3,
   assertIsBlock,
   randomAeName,
