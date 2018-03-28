@@ -1,3 +1,7 @@
+var _classCallCheck = require("@babel/runtime/helpers/classCallCheck");
+
+var _createClass = require("@babel/runtime/helpers/createClass");
+
 /*
  * ISC License (ISC)
  * Copyright 2018 aeternity developers
@@ -14,27 +18,35 @@
  *  OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *  PERFORMANCE OF THIS SOFTWARE.
  */
+var ConnectionListener =
+/*#__PURE__*/
+function () {
+  function ConnectionListener(_ref) {
+    var onOpen = _ref.onOpen,
+        onClosed = _ref.onClosed;
 
+    _classCallCheck(this, ConnectionListener);
 
-require('@babel/polyfill')
+    if (onOpen && typeof onOpen === 'function') {
+      this.onOpen = onOpen;
+    }
 
-const chai = require ('chai')
-const assert = chai.assert
-const utils = require('../../utils')
+    if (onClosed && typeof onClosed === 'function') {
+      this.onClosed = onClosed;
+    }
+  }
 
-describe('Http service transactions', () => {
-  describe('transaction detail', () => {
-    it('should return transaction details', async function () {
-      this.timeout(utils.TIMEOUT)
-      const { pub:pub1, priv } = utils.wallets[0]
-      const { pub:pub2 } = utils.wallets[1]
-      // charge wallet first
-      await utils.charge(pub1, 20)
-      let txData = await utils.httpProvider.base.getSpendTx(pub2, 10, pub1)
-      await utils.httpProvider.tx.sendSigned(txData.tx, priv)
-      const height = await utils.httpProvider.tx.waitForTransaction(txData['tx_hash'])
-      assert.notEqual(-1, height)
-    })
-  })
-})
+  _createClass(ConnectionListener, [{
+    key: "onOpen",
+    value: function onOpen() {}
+  }, {
+    key: "onClosed",
+    value: function onClosed() {}
+  }]);
 
+  return ConnectionListener;
+}();
+
+module.exports = {
+  ConnectionListener: ConnectionListener
+};

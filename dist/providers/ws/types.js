@@ -14,27 +14,23 @@
  *  OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *  PERFORMANCE OF THIS SOFTWARE.
  */
-
-
-require('@babel/polyfill')
-
-const chai = require ('chai')
-const assert = chai.assert
-const utils = require('../../utils')
-
-describe('Http service transactions', () => {
-  describe('transaction detail', () => {
-    it('should return transaction details', async function () {
-      this.timeout(utils.TIMEOUT)
-      const { pub:pub1, priv } = utils.wallets[0]
-      const { pub:pub2 } = utils.wallets[1]
-      // charge wallet first
-      await utils.charge(pub1, 20)
-      let txData = await utils.httpProvider.base.getSpendTx(pub2, 10, pub1)
-      await utils.httpProvider.tx.sendSigned(txData.tx, priv)
-      const height = await utils.httpProvider.tx.waitForTransaction(txData['tx_hash'])
-      assert.notEqual(-1, height)
-    })
-  })
-})
-
+module.exports = {
+  actions: {
+    MINED_BLOCK: 'mined_block',
+    NEW_BLOCK: 'new_block',
+    REGISTER: 'register',
+    RESPONSE: 'response',
+    NEW_ORACLE_QUERY: 'new_oracle_query',
+    NEW_ORACLE_RESPONSE: 'new_oracle_response',
+    QUERY: 'query',
+    SUBSCRIBE: 'subscribe'
+  },
+  origins: {
+    ORACLE: 'oracle',
+    CHAIN: 'chain'
+  },
+  targets: {
+    CHAIN: 'chain',
+    ORACLE: 'oracle'
+  }
+};

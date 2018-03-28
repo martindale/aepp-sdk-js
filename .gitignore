@@ -1,3 +1,6 @@
 node_modules
+/.env
 /test-results.xml
-/dist
+.tern-port
+.tern-project
+.dir-locals.el

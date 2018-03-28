@@ -14,27 +14,31 @@
  *  OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *  PERFORMANCE OF THIS SOFTWARE.
  */
+var leftPad = function leftPad(length, inputBuffer) {
+  var fill = length - inputBuffer.length;
 
+  if (fill > 0) {
+    var fillArray = new Uint8Array(fill);
+    fillArray.fill(0, fill);
+    return Buffer.concat([fillArray, inputBuffer]);
+  } else {
+    return inputBuffer;
+  }
+};
 
-require('@babel/polyfill')
+var rightPad = function rightPad(length, inputBuffer) {
+  var fill = length - inputBuffer.length;
 
-const chai = require ('chai')
-const assert = chai.assert
-const utils = require('../../utils')
+  if (fill > 0) {
+    var fillArray = new Uint8Array(fill);
+    fillArray.fill(0, fill);
+    return Buffer.concat([inputBuffer, fillArray]);
+  } else {
+    return inputBuffer;
+  }
+};
 
-describe('Http service transactions', () => {
-  describe('transaction detail', () => {
-    it('should return transaction details', async function () {
-      this.timeout(utils.TIMEOUT)
-      const { pub:pub1, priv } = utils.wallets[0]
-      const { pub:pub2 } = utils.wallets[1]
-      // charge wallet first
-      await utils.charge(pub1, 20)
-      let txData = await utils.httpProvider.base.getSpendTx(pub2, 10, pub1)
-      await utils.httpProvider.tx.sendSigned(txData.tx, priv)
-      const height = await utils.httpProvider.tx.waitForTransaction(txData['tx_hash'])
-      assert.notEqual(-1, height)
-    })
-  })
-})
-
+module.exports = {
+  leftPad: leftPad,
+  rightPad: rightPad
+};

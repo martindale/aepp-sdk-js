@@ -1,3 +1,5 @@
+var _classCallCheck = require("@babel/runtime/helpers/classCallCheck");
+
 /*
  * ISC License (ISC)
  * Copyright 2018 aeternity developers
@@ -14,27 +16,10 @@
  *  OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
  *  PERFORMANCE OF THIS SOFTWARE.
  */
+var HttpService = function HttpService(epochClient) {
+  _classCallCheck(this, HttpService);
 
+  this.client = epochClient;
+};
 
-require('@babel/polyfill')
-
-const chai = require ('chai')
-const assert = chai.assert
-const utils = require('../../utils')
-
-describe('Http service transactions', () => {
-  describe('transaction detail', () => {
-    it('should return transaction details', async function () {
-      this.timeout(utils.TIMEOUT)
-      const { pub:pub1, priv } = utils.wallets[0]
-      const { pub:pub2 } = utils.wallets[1]
-      // charge wallet first
-      await utils.charge(pub1, 20)
-      let txData = await utils.httpProvider.base.getSpendTx(pub2, 10, pub1)
-      await utils.httpProvider.tx.sendSigned(txData.tx, priv)
-      const height = await utils.httpProvider.tx.waitForTransaction(txData['tx_hash'])
-      assert.notEqual(-1, height)
-    })
-  })
-})
-
+module.exports = HttpService;
