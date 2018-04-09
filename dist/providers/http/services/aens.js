@@ -518,7 +518,7 @@ function (_HttpService) {
                 };
 
                 if (!priv) {
-                  _context7.next = 16;
+                  _context7.next = 15;
                   break;
                 }
 
@@ -526,23 +526,22 @@ function (_HttpService) {
                   nonce: options && options.nonce,
                   account: pub
                 });
-                console.log('payload', payload);
-                _context7.next = 9;
+                _context7.next = 8;
                 return this.client.post('tx/name/revoke', payload);
 
-              case 9:
+              case 8:
                 _ref7 = _context7.sent;
                 data = _ref7.data;
-                _context7.next = 13;
+                _context7.next = 12;
                 return this.client.tx.sendSigned(data.tx, priv);
 
-              case 13:
+              case 12:
                 return _context7.abrupt("return", data);
 
-              case 16:
+              case 15:
                 throw new Error('Private key must be set');
 
-              case 17:
+              case 16:
               case "end":
                 return _context7.stop();
             }
