@@ -28,8 +28,8 @@ class Contracts extends HttpService {
       'call_data': options.callData || '',
       deposit: options.deposit || 4
     }
-    const {data} = await this.client.post('tx/contract/create', contractTxData)
-    return data
+
+    return this.client.ae.postContractCreate(contractTxData)
   }
 
   async getCallTxWithData (callData, contractPubKey, options = {}) {
@@ -40,8 +40,8 @@ class Contracts extends HttpService {
       'call_data': callData,
       'contract': contractPubKey
     }
-    const {data} = await this.client.post('tx/contract/call', payload)
-    return data
+
+    return this.client.ae.postContractCall(payload)
   }
 
   async getCallTx (contractAddress, callData, options = {}) {
@@ -52,26 +52,22 @@ class Contracts extends HttpService {
       'call_data': callData,
       'contract': contractAddress
     }
-    const {data} = await this.client.post('tx/contract/call', payload)
-    return data
+
+    return this.client.ae.postContractCall(payload)    
   }
 
   async compile (code, options) {
-    const inputData = {code, options}
-    const {data} = await this.client.post('contract/compile', inputData)
-    return data.bytecode
+    return this.client.ae.compileContract({code, options})
   }
 
   async callStatic (abi, code, func, arg) {
-    const inputData = {abi: abi, code, 'function': func, arg}
-    const {data} = await this.client.post('contract/call', inputData)
-    return data.out
+    return this.client.ae.postContractCall({abi: abi, code, 'function': func, arg})
   }
 
   async encodeCallData (abi, code, func, args = []) {
     const body = {code, abi, 'function': func, 'arg': args.join(',')}
-    const {data} = await this.client.post('contract/encode-calldata', body)
-    return data.calldata
+    const { calldata } = await this.client.ae.encodeCalldata(body)
+    return calldata
   }
 
   async deployContract (code, account, options = {}) {
@@ -94,8 +90,8 @@ class Contracts extends HttpService {
       'arguments': args,
       'nonce': options.nonce
     }
-    const {data} = await this.client.post('tx/contract/call/compute', body)
-    return data
+
+    return this.client.ae.postContractCallCompute(body)
   }
 }
 

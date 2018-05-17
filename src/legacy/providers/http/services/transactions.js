@@ -16,6 +16,7 @@
  */
 
 import { Crypto } from '../../../../'
+import * as R from 'ramda'
 const {createTxParams, createTxRangeParams} = require('./utils')
 const HttpService = require('./index')
 
@@ -114,7 +115,11 @@ class Transactions extends HttpService {
   }
 
   async send (tx) {
-    return this.client.ae.postTx({ tx })
+    const result = await this.client.ae.postTx({ tx })
+    result.wait = async () => {
+      return this.client.tx.waitForTransaction(result['tx_hash'])
+    }
+    return result
   }
 
   async sendSigned (txHash, privateKey, options = {}) {

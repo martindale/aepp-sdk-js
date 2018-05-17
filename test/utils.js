@@ -58,11 +58,18 @@ const wallets = Array(3).fill().map(() => Crypto.generateKeyPair())
 
 async function charge (receiver, amount) {
   console.log(`Charging ${receiver} with ${amount}`)
-  const { tx_hash } = await httpProvider.base.spend(receiver, amount, sourceWallet)
-  await httpProvider.tx.waitForTransaction(tx_hash)
+  const tx = await httpProvider.base.spend(receiver, amount, sourceWallet)
+  return tx.wait()
 }
 
 const TIMEOUT = 120000
+
+function waitReady () {
+  return async function () {
+    this.timeout(TIMEOUT)
+    await httpProvider.provider.ready
+  }
+}
 
 export {
   httpProvider,
@@ -72,5 +79,6 @@ export {
   charge,
   TIMEOUT,
   url,
-  internalUrl
+  internalUrl,
+  waitReady
 }

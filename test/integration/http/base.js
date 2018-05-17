@@ -22,8 +22,26 @@ const assert = chai.assert
 const utils = require('../../utils')
 
 describe('Http service base', () => {
-  before(async () => {
-    await utils.httpProvider.provider.ready
+  before(utils.waitReady())
+
+  describe('spend', () => {
+    it('should increase the balance', async function () {
+      this.timeout(utils.TIMEOUT * 2)
+
+      const { pub: pub1 } = utils.wallets[0]
+      const { pub: pub2 } = utils.wallets[1]
+
+      // charge wallets first
+      await utils.charge(pub1, 10)
+      await utils.charge(pub2, 10)
+
+      const balanceBefore = await utils.httpProvider.accounts.getBalance(pub2)
+
+      const tx = await utils.httpProvider.base.spend(pub2, 5, utils.wallets[0])
+      await tx.wait()
+      const balance = await utils.httpProvider.accounts.getBalance(pub2)
+      assert.equal(balanceBefore + 5, balance)
+    })
   })
 
   let prevHash
@@ -78,8 +96,8 @@ describe('Http service base', () => {
 
       const balanceBefore = await utils.httpProvider.accounts.getBalance(pub2)
 
-      const { tx_hash } = await utils.httpProvider.base.spend(pub2, 5, utils.wallets[0])
-      await utils.httpProvider.tx.waitForTransaction(tx_hash)
+      const tx = await utils.httpProvider.base.spend(pub2, 5, utils.wallets[0])
+      await tx.wait()
       const balance = await utils.httpProvider.accounts.getBalance(pub2)
       assert.equal(balanceBefore + 5, balance)
     })
